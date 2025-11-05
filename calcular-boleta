@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+import argparse
+
+
+def calcular_bruto(sueldo_liquido: int, retencion: float) -> int:
+    divisor = 1 - retencion
+    bruto = round(sueldo_liquido / divisor)
+    return bruto
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        prog="boleta",
+        description="Calcula el sueldo bruto a partir del líquido y la retención.",
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+
+    parser.add_argument("sueldo_liquido", type=int, help="Valor del sueldo líquido (ej: 500000)")
+    parser.add_argument(
+        "-r", "--retencion",
+        type=float,
+        default=0.145,
+        help="Retención en decimal (ej: 0.145 para 14.5%% por boleta).",
+    )
+
+    args = parser.parse_args()
+    bruto = calcular_bruto(args.sueldo_liquido, args.retencion)
+
+    # Format CL-style thousands separator (e.g. $1.234.567)
+    txt = f"{bruto:,}".replace(",", ".")
+    print(f"${txt}")
+
+
+if __name__ == "__main__":
+    main()
